@@ -1,10 +1,10 @@
-using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitController : MonoBehaviour
+public class TypeDefinition : MonoBehaviour
 {
+
     // 방향을 나타내는 클래스입니다.
     // 방향이나 벡터를 통해 값을 저장하며, 해당 값을 저장할때마다, 각도와 방향을 동시에 저장합니다.
     public class Direction
@@ -69,50 +69,21 @@ public class UnitController : MonoBehaviour
         right
     }
 
-    float speed = 3.0f;
-    Direction unitViewDirection;
-    //component
-    Rigidbody myRigidbody;
+    // 최대 10자까지 입력 가능
+    // 대문자 26개, 소문자 26개, 숫자 10개, 공백' ' 1개, 짝대기 문자'-' 1개 = 64개
+    // 각 칸마다 +- 26하면 대문자, 소문자 변환이 가능
+    // + 해당 문자의 길이는 마지막 남는 4개의 비트로 표시할 수 있음.
+    // 문자 하나당 64(비트 6개)로 판단하여 long(64비트)로 문자 10개를 담을 수 있음
+    // 기능:
+    // 문자열을 매개변수로 받으면 내부의 ulong 숫자로 변환함,
+    // 내부의 ulong숫자를 문자열로 리턴해줌
+    // 빠른 equals를 제공함.
+    // 문자열 더하기를 제공
+    // 문자열 길이를 제공
+    // 인덱서 기능 제공
+    // 해당 문자열의 임의의 원소에 더하기, 빼기 기능 제공
+    struct StringNum
+    {
 
-    public void Turn(float angle)
-    {
-        unitViewDirection.AngleDegree += angle;
-    }
-    public void TurnTo(Vector3 targetPoint)
-    {
-        Vector3 vector = targetPoint - transform.position;
-        vector.y = 0;
-        unitViewDirection.Forward
-            = vector.normalized;
-    }
-
-    public void Move(Direction90 direction)
-    {
-        switch (direction)
-        {
-            case Direction90.forward: Move(unitViewDirection.Forward); break;
-            case Direction90.back: Move(-unitViewDirection.Forward); break;
-            case Direction90.left: Move(-unitViewDirection.Right); break;
-            case Direction90.right: Move(unitViewDirection.Right); break;
-        }
-    }
-    public void Move(Vector3 direction)
-    {
-        transform.position += Time.deltaTime * speed * direction;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        unitViewDirection = new Direction();
-        unitViewDirection.Forward = Vector3.forward;
-        myRigidbody = GetComponent<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Move(Direction90.forward);
-        //unitViewDirection.AngleDegree += Time.deltaTime * 60;
     }
 }
