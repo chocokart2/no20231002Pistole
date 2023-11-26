@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -84,6 +85,66 @@ public class TypeDefinition : MonoBehaviour
     // 해당 문자열의 임의의 원소에 더하기, 빼기 기능 제공
     struct StringNum
     {
+        public string Words
+        {
+            get;
+            set;
+        }
+        public int size
+        {
+            get
+            {
+                throw new NotImplementedException();
+                return -1;
+            }
+        }
 
+        private const long WORD_ID_ZERO = 0;
+        private const long WORD_ID_NINE = 9;
+        private const long WORD_ID_UPPER_A = 10;
+        private const long WORD_ID_UPPER_Z = 35;
+        private const long WORD_ID_LOWER_A = 36;
+        private const long WORD_ID_LOWER_Z = 61;
+        private const char NOT_CONVERTIBLE = '\0';
+        private long m_value; // 0b_SSSS_CCCCCC_CCCCCC_CCCCCC_CCCCCC_CCCCCC_CCCCCC_CCCCCC_CCCCCC_CCCCCC_CCCCCC;
+
+        public static bool operator ==(StringNum left, StringNum right) => left.m_value == right.m_value;
+        public static bool operator !=(StringNum left, StringNum right) => left.m_value != right.m_value;
+
+        
+        public int Set(string words)
+        {
+            throw new NotImplementedException();
+
+            //10칸까지만 입력함
+
+            return 0;
+
+            // -1 : 사이즈가 10을 벗어남
+            // -2 : 입력할 수 없는 문자가 있음.
+        }
+        public void Set(int number)
+        {
+            Set(number.ToString());
+        }
+
+        private long M_Convert(char c)
+        {
+            if (c >= '0' && c <= '9') return c - '0';
+            if (c >= 'A' && c <= 'Z') return c - 'A' + WORD_ID_UPPER_A;
+            if (c >= 'a' && c <= 'z') return c - 'a' + WORD_ID_LOWER_A;
+            if (c == ' ') return 62;
+            if (c == '-') return 63;
+            return -1;
+        }
+        private char M_Convert(long l)
+        {
+            if (l >= WORD_ID_ZERO && l <= WORD_ID_NINE) return (char)('0' + l);
+            if (l >= WORD_ID_UPPER_A && l <= WORD_ID_UPPER_Z) return (char)('A' + l - 10);
+            if (l >= WORD_ID_LOWER_A && l <= WORD_ID_LOWER_Z) return (char)('a' + l - 36);
+            if (l == 62) return ' ';
+            if (l == 63) return '-';
+            return NOT_CONVERTIBLE;
+        }
     }
 }

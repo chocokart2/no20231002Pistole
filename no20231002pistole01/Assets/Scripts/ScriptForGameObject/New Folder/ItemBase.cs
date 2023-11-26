@@ -31,6 +31,36 @@ public class ItemBase : MonoBehaviour
         public virtual void Reload(GameObject user, Vector3 direction) { }
     }
 
+    public class ItemBuilder<T> where T : Item, new()
+    {
+        private T returnValue;
+
+        public ItemBuilder()
+        {
+            returnValue = new T();
+        }
+
+        public ItemBuilder<T> SetName(string val)
+        {
+            returnValue.name = val;
+            return this;
+        }
+        public ItemBuilder<T> SetSubItems(ItemList val)
+        {
+            returnValue.subItems = val;
+            return this;
+        }
+        public ItemBuilder<T> SetStackCount(int val)
+        {
+            returnValue.stackCount = val;
+            return this;
+        }
+        public Item Build()
+        {
+            return returnValue;
+        }
+    }
+
     public class ItemList
     {
         // 아이템은 내부의 다른 아이템을 포함시킬 수 있지만, 타입에 따라서 어떤 아이템이 포함되어야 하는지에 대한

@@ -46,6 +46,10 @@ public class UnitController : TypeDefinition
     {
         inventory.Use(direction);
     }
+    public void Reload(Vector3 direction)
+    {
+        inventory.Reload(direction);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -57,7 +61,10 @@ public class UnitController : TypeDefinition
         inventory = new ItemBase.Inventory();
         inventory.user = gameObject;
         inventory.items = new ItemBase.Item[1];
-        inventory.items[0] = new ItemDerived.Gun();
+        inventory.items[0] = new ItemBase.ItemBuilder<ItemDerived.Gun>()
+            .SetName("Gun")
+            .SetSubItems(new ItemBase.ItemList() { items = new ItemBase.Item[1] })
+            .Build();
     }
 
     // Update is called once per frame

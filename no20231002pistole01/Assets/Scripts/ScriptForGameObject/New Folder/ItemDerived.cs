@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemDerived : ItemBase
 {
+    
+
 
     public class Fist : Item
     {
@@ -21,9 +24,22 @@ public class ItemDerived : ItemBase
     public class Gun : Item
     {
         public const int AMMO_INDEX = 0;
+        protected int ammoMagazine = 3;
 
         public override void Use(GameObject user, Vector3 direction)
         {
+            if (subItems.items[AMMO_INDEX] == null)
+            {
+                Hack.Say("Subitem의 탄알에 아이템이 없습니다.");
+                return;
+            }
+            if (subItems.items[AMMO_INDEX].stackCount == 0)
+            {
+                Hack.Say("Subitem의 탄창이 비었습니다.");
+
+                return;
+            }
+
             //this.subItems.items[AMMO] as
 
             
@@ -36,7 +52,10 @@ public class ItemDerived : ItemBase
         
         public override void Reload(GameObject user, Vector3 direction)
         {
-            base.Reload(user, direction);
+            subItems.items[AMMO_INDEX] = new ItemBuilder<Item>()
+                .SetName("GunBullet")
+                .SetStackCount(ammoMagazine)
+                .Build();
         }
 
         protected void Shot(GameObject user, Vector3 direction)
@@ -44,6 +63,14 @@ public class ItemDerived : ItemBase
             GameObject instantiatedObject = Instantiate(bulletGo, user.transform.position, Quaternion.Euler(direction));
             BulletController m_bulletComponent = instantiatedObject.GetComponent<BulletController>();
             m_bulletComponent.Init(direction);
+        }
+    }
+
+    public class Pistol : Gun
+    {
+        public Pistol()
+        {
+            ammoMagazine = 12;
         }
     }
 }

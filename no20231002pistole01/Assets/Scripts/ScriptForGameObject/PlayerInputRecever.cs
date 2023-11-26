@@ -11,6 +11,8 @@ public class PlayerInputRecever : MonoBehaviour
     KeyCode leftKey = KeyCode.A;
     KeyCode rightKey = KeyCode.D;
 
+    KeyCode reloadKey = KeyCode.R;
+
     Camera cam;
 
     UnitController myUnitController;
@@ -30,6 +32,7 @@ public class PlayerInputRecever : MonoBehaviour
     void Update()
     {
         MoveKeyInput();
+        ActionKeyInput();
         MouseInput();
     }
 
@@ -65,11 +68,11 @@ public class PlayerInputRecever : MonoBehaviour
             layerMask: mapMaskLayer))
         {
             myUnitController.unitViewDirection.Forward = (m_hitOnMap.point - transform.position).normalized;
-            Hack.Say($"direct = {m_hitOnMap.point}");
+            //Hack.Say($"direct = {m_hitOnMap.point}");
         }
         else
         {
-            Hack.Say("¾È ºÎµóÇû¾î");
+            //Hack.Say("¾È ºÎµóÇû¾î");
         }
 
         Physics.Raycast(
@@ -91,7 +94,14 @@ public class PlayerInputRecever : MonoBehaviour
             myUnitController.Act(myUnitController.unitViewDirection.Forward);
         }
     }
-
+    void ActionKeyInput()
+    {
+        if (Input.GetKeyDown(reloadKey))
+        {
+            Hack.Say("¸®·Îµå");
+            myUnitController.Reload(myUnitController.unitViewDirection.Forward);
+        }
+    }
 
     
 
