@@ -93,6 +93,10 @@ public class PlayerInputRecever : MonoBehaviour
 
             myUnitController.Act(myUnitController.unitViewDirection.Forward);
         }
+        if (Input.GetMouseButton(0))
+        {
+            myUnitController.ActHold(myUnitController.unitViewDirection.Forward);
+        }
     }
     void ActionKeyInput()
     {

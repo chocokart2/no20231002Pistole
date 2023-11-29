@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletController : TypeDefinition
 {
-    float speed = 1.3f;
+    float speed = 7.0f;
     float lifeTime = 2.0f;
     Direction direction;
 

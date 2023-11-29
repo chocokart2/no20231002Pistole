@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemBase : MonoBehaviour
+public class ItemBase : TypeDefinition
 {
     static public GameObject fistGo;
     static public GameObject bulletGo;
@@ -27,13 +27,15 @@ public class ItemBase : MonoBehaviour
         public ItemList subItems;
         public int stackCount;
 
+        public virtual void Update() { }
         public virtual void Use(GameObject user, Vector3 direction) { }
+        public virtual void UseHold(GameObject user, Vector3 direction) { }
         public virtual void Reload(GameObject user, Vector3 direction) { }
     }
 
     public class ItemBuilder<T> where T : Item, new()
     {
-        private T returnValue;
+        protected T returnValue;
 
         public ItemBuilder()
         {
@@ -75,13 +77,24 @@ public class ItemBase : MonoBehaviour
         public GameObject user;
         public int itemCursor;
 
+        public void Update()
+        {
+            for (int index = 0; index < items.Length; ++index)
+            {
+                items[index].Update();
+            }
+        }
         public void Use(Vector3 direction) => items[itemCursor].Use(user, direction);
+        public void UseHold(Vector3 direction) => items[itemCursor].UseHold(user, direction);
         public void Reload(Vector3 direction) => items[itemCursor].Reload(user, direction);
         public void SetItem(int index, Item item)
         {
             items[index] = item;
         }
-        
+        public void SetItem<ItemType>(int index, ItemType item) where ItemType : Item
+        {
+            items[index] = item;
+        }
     }
 
 }

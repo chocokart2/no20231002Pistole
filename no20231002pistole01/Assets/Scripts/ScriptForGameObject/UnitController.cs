@@ -46,6 +46,10 @@ public class UnitController : TypeDefinition
     {
         inventory.Use(direction);
     }
+    public void ActHold(Vector3 direction)
+    {
+        inventory.UseHold(direction);
+    }
     public void Reload(Vector3 direction)
     {
         inventory.Reload(direction);
@@ -61,7 +65,9 @@ public class UnitController : TypeDefinition
         inventory = new ItemBase.Inventory();
         inventory.user = gameObject;
         inventory.items = new ItemBase.Item[1];
-        inventory.items[0] = new ItemBase.ItemBuilder<ItemDerived.Gun>()
+        inventory.items[0] = new ItemDerived.RifleBuilder<ItemDerived.Rifle>()
+            .SetShotTerm(0.2f)
+            .SetMagazineSize(30)
             .SetName("Gun")
             .SetSubItems(new ItemBase.ItemList() { items = new ItemBase.Item[1] })
             .Build();
@@ -72,5 +78,7 @@ public class UnitController : TypeDefinition
     {
         //Move(Direction90.forward);
         //unitViewDirection.AngleDegree += Time.deltaTime * 60;
+
+        inventory.Update();
     }
 }
