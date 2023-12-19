@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +21,7 @@ public class ItemBase : TypeDefinition
     }
 
 
-
+    [Serializable]
     public class Item
     {
         public string name;
@@ -31,6 +32,8 @@ public class ItemBase : TypeDefinition
         public virtual void Use(GameObject user, Vector3 direction) { }
         public virtual void UseHold(GameObject user, Vector3 direction) { }
         public virtual void Reload(GameObject user, Vector3 direction) { }
+        public virtual void Put<T>(T subItem, int index) where T : Item
+        { }
     }
 
     public class ItemBuilder<T> where T : Item, new()
@@ -40,6 +43,9 @@ public class ItemBase : TypeDefinition
         public ItemBuilder()
         {
             returnValue = new T();
+            returnValue.subItems = new ItemList();
+            returnValue.subItems.items = new Item[0];
+            returnValue.stackCount = 1;
         }
 
         public ItemBuilder<T> SetName(string val)
@@ -52,17 +58,27 @@ public class ItemBase : TypeDefinition
             returnValue.subItems = val;
             return this;
         }
+        public ItemBuilder<T> SetSubItems(params Item[] val)
+        {
+            returnValue.subItems = new ItemList()
+            {
+                items = val
+            };
+            return this;
+        }
+
         public ItemBuilder<T> SetStackCount(int val)
         {
             returnValue.stackCount = val;
             return this;
         }
-        public Item Build()
+        public T Build()
         {
             return returnValue;
         }
     }
 
+    [Serializable]
     public class ItemList
     {
         // 아이템은 내부의 다른 아이템을 포함시킬 수 있지만, 타입에 따라서 어떤 아이템이 포함되어야 하는지에 대한

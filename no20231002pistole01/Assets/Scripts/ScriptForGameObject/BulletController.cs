@@ -8,6 +8,8 @@ public class BulletController : TypeDefinition
     float lifeTime = 2.0f;
     Direction direction;
 
+    public int damage = 0;
+
     public void Init()
     {
         direction = new Direction();

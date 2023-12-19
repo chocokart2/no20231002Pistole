@@ -95,7 +95,7 @@ public class TypeDefinition : MonoBehaviour
             get
             {
                 throw new NotImplementedException();
-                return -1;
+                //return -1;
             }
         }
 
@@ -118,7 +118,7 @@ public class TypeDefinition : MonoBehaviour
 
             //10칸까지만 입력함
 
-            return 0;
+            //return 0;
 
             // -1 : 사이즈가 10을 벗어남
             // -2 : 입력할 수 없는 문자가 있음.

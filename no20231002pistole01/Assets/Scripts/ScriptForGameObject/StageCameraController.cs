@@ -5,7 +5,7 @@ using UnityEngine;
 public class StageCameraController : MonoBehaviour
 {
     GameObject player;
-    Vector3 positionDelta = new Vector3(0, 10, -7);
+    Vector3 positionDelta = new Vector3(0, 15, -10);
     TypeDefinition.Direction direction;
 
     private void MoveToPlayer()

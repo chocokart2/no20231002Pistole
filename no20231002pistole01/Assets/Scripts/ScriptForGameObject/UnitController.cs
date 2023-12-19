@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class UnitController : TypeDefinition
 {
+    public enum SoundName
+    {
+        gunShot,
+        gunReload1
+    }
+
     public Direction unitViewDirection;
 
     float speed = 3.0f;
@@ -13,8 +19,8 @@ public class UnitController : TypeDefinition
 
     //component
     Rigidbody myRigidbody;
-
-
+    AudioSource myGunSound;
+    AudioSource myGunSoundReload1;
 
     public void Turn(float angle)
     {
@@ -55,6 +61,24 @@ public class UnitController : TypeDefinition
         inventory.Reload(direction);
     }
 
+    public void PlaySound(SoundName sound)
+    {
+        switch (sound)
+        {
+            case SoundName.gunShot: myGunSound.Play(); break;
+            case SoundName.gunReload1: myGunSoundReload1.Play(); break;
+            default: break;
+        }
+    }
+
+    private void SoundArrange()
+    {
+        AudioSource[] soundComponents = GetComponents<AudioSource>();
+        myGunSound = soundComponents[0];
+        myGunSoundReload1 = soundComponents[1];
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,12 +89,20 @@ public class UnitController : TypeDefinition
         inventory = new ItemBase.Inventory();
         inventory.user = gameObject;
         inventory.items = new ItemBase.Item[1];
-        inventory.items[0] = new ItemDerived.RifleBuilder<ItemDerived.Rifle>()
-            .SetShotTerm(0.2f)
-            .SetMagazineSize(30)
-            .SetName("Gun")
-            .SetSubItems(new ItemBase.ItemList() { items = new ItemBase.Item[1] })
+        inventory.items[0] = new ItemDerived.ShotGunBuilder<ItemDerived.ShotGun>()
+            .SetMagazineSize(4)
+            .SetName("ShotGun")
+            .SetSubItems(
+                null,
+                new ItemDerived.MagazineBuilder<
+                    //ItemDerived.Magazine<ItemDerived.ShotGunShell>, ItemDerived.ShotGunShell>()
+                    ItemDerived.Magazine>()
+                    .SetCapacity(4)
+                    .Build()
+                    )
             .Build();
+
+        SoundArrange();
     }
 
     // Update is called once per frame
